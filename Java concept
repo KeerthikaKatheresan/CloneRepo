@@ -1,0 +1,174 @@
+Java Design Patterns: Singleton, Factory, Abstract Factory, Builder
+1. Singleton Design Pattern
+Explanation:
+The Singleton pattern ensures that only one instance of a class is created throughout the application. It provides a global point of access to that instance.
+Flow of the Program:
+1. Private constructor prevents object creation from outside.
+2. A static variable holds the single instance.
+3. A static method returns the instance.
+Example Code:
+class Singleton {
+    private static Singleton instance = null;
+
+    private Singleton() {}
+
+    public static Singleton getInstance() {
+        if (instance == null) {
+            instance = new Singleton();
+        }
+        return instance;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Singleton s1 = Singleton.getInstance();
+        Singleton s2 = Singleton.getInstance();
+        System.out.println(s1 == s2);
+    }
+}
+Output:
+true
+2. Factory Design Pattern
+Explanation:
+Factory pattern provides an interface for creating objects, but allows subclasses or methods to decide which class to instantiate. It increases loose coupling.
+Flow of the Program:
+1. A common interface is defined.
+2. Concrete classes implement the interface.
+3. Factory class decides which object to create based on input.
+Example Code:
+interface Shape {
+    void draw();
+}
+
+class Circle implements Shape {
+    public void draw() {
+        System.out.println("Circle drawn");
+    }
+}
+
+class Square implements Shape {
+    public void draw() {
+        System.out.println("Square drawn");
+    }
+}
+
+class ShapeFactory {
+    public static Shape getShape(String type) {
+        if (type.equals("CIRCLE")) return new Circle();
+        if (type.equals("SQUARE")) return new Square();
+        return null;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Shape shape = ShapeFactory.getShape("CIRCLE");
+        shape.draw();
+    }
+}
+Output:
+Circle drawn
+3. Abstract Factory Design Pattern
+Explanation:
+The Abstract Factory pattern provides a way to create families of related objects without specifying their concrete classes.
+Flow of the Program:
+1. Abstract factory defines a set of creation methods.
+2. Concrete factories implement those methods.
+3. Client uses factory to create related objects.
+Example Code:
+interface Button {
+    void paint();
+}
+
+class WindowsButton implements Button {
+    public void paint() {
+        System.out.println("Windows Button");
+    }
+}
+
+class MacButton implements Button {
+    public void paint() {
+        System.out.println("Mac Button");
+    }
+}
+
+interface GUIFactory {
+    Button createButton();
+}
+
+class WindowsFactory implements GUIFactory {
+    public Button createButton() {
+        return new WindowsButton();
+    }
+}
+
+class MacFactory implements GUIFactory {
+    public Button createButton() {
+        return new MacButton();
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        GUIFactory factory = new WindowsFactory();
+        Button b = factory.createButton();
+        b.paint();
+    }
+}
+Output:
+Windows Button
+4. Builder Design Pattern
+Explanation:
+Builder pattern separates the construction of a complex object from its representation, allowing the same construction process to create different representations.
+Flow of the Program:
+1. Builder class has methods to set values.
+2. A Director or main method uses builder to create object step by step.
+3. Final object is returned after building.
+Example Code:
+class House {
+    private String walls;
+    private String roof;
+
+    public House(String walls, String roof) {
+        this.walls = walls;
+        this.roof = roof;
+    }
+
+    public String toString() {
+        return walls + " and " + roof;
+    }
+}
+
+class HouseBuilder {
+    private String walls;
+    private String roof;
+
+    public HouseBuilder setWalls(String walls) {
+        this.walls = walls;
+        return this;
+    }
+
+    public HouseBuilder setRoof(String roof) {
+        this.roof = roof;
+        return this;
+    }
+
+    public House build() {
+        return new House(walls, roof);
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        House house = new HouseBuilder()
+            .setWalls("Brick Walls")
+            .setRoof("Concrete Roof")
+            .build();
+
+        System.out.println(house);
+    }
+}
+Output:
+Brick Walls and Concrete Roof
+
