@@ -48,7 +48,7 @@ true
 ---------------------------
 2. Factory Design Pattern
 Explanation:
-Factory pattern provides an interface for creating objects, but allows subclasses or methods to decide which class to instantiate. It increases loose coupling.
+provides an interface for creating objects, but allows subclasses or methods to decide which class to instantiate.
 Flow of the Program:
 1. A common interface is defined.
 2. Concrete classes implement the interface.
@@ -60,16 +60,17 @@ interface Shape {
 
 class Circle implements Shape {
     public void draw() {
-        System.out.println("Circle drawn");
+        System.out.println("Circle drawn"); //override
     }
 }
 
 class Square implements Shape {
     public void draw() {
-        System.out.println("Square drawn");
+        System.out.println("Square drawn"); //override
     }
 }
 
+//Factory class-it decides which obj to create
 class ShapeFactory {
     public static Shape getShape(String type) {
         if (type.equals("CIRCLE")) return new Circle();
@@ -89,11 +90,8 @@ Circle drawn
 --------------------------
 3. Abstract Factory Design Pattern
 Explanation:
-The Abstract Factory pattern provides a way to create families of related objects without specifying their concrete classes.
-Flow of the Program:
-1. Abstract factory defines a set of creation methods.
-2. Concrete factories implement those methods.
-3. Client uses factory to create related objects.
+Here we can create obj for related families.
+
 Example Code:
 interface Button {
     void paint();
@@ -112,7 +110,7 @@ class MacButton implements Button {
 }
 
 interface GUIFactory {
-    Button createButton();
+    Button createButton(); //creating another abstract method
 }
 
 class WindowsFactory implements GUIFactory {
@@ -140,12 +138,8 @@ Windows Button
 --------------------
 4. Builder Design Pattern
 Explanation:
-construct complex objects step by step. 
-the builder lets you create an object by chaining methods in a readable way.
-Flow of the Program:
-1. Builder class has methods to set values.
-2. main method uses builder to create object step by step.
-3. Final object is returned after building.
+used to construct complex objects step by step. 
+and we can also chain the methods in a readable way.
 
 Example Code:
 class House {
@@ -162,20 +156,24 @@ class House {
     }
 }
 
+//builder class
 class HouseBuilder {
     private String walls;
     private String roof;
 
+//setter method for walls
     public HouseBuilder setWalls(String walls) {
         this.walls = walls;
         return this;
     }
 
+//setter methods for roof
     public HouseBuilder setRoof(String roof) {
         this.roof = roof;
         return this;
     }
 
+//the build method which creates obj for House class
     public House build() {
         return new House(walls, roof);
     }
@@ -202,8 +200,9 @@ Subclass can override certain steps if needed.
 
 Eg:
 // Step 1: Abstract class with template method
-abstract class Beverage {
-    // Template method
+
+ class Beverage {
+    // Template method-declared as final 
     public final void prepareRecipe() {
         boilWater();
         brew();
@@ -211,6 +210,7 @@ abstract class Beverage {
         addExtras();
     }
 
+//defining methods
     void boilWater() {
         System.out.println("Boiling water");
     }
@@ -226,6 +226,7 @@ abstract class Beverage {
 
 // Step 2: Concrete classes
 class Tea extends Beverage {
+//over ride 
     void brew() {
         System.out.println("Steeping the tea");
     }
