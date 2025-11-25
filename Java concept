@@ -1,34 +1,51 @@
-Java Design Patterns: Singleton, Factory, Abstract Factory, Builder
+Java Design Patterns: Singleton, Factory, Abstract Factory, Builder,Template
+
+Types of Design Patterns 
+1. Creational Design Patterns 
+2. Structural Design Patterns 
+3. Behavioral Design Patterns                         
+
+
 1. Singleton Design Pattern
 Explanation:
-The Singleton pattern ensures that only one instance of a class is created throughout the application. It provides a global point of access to that instance.
+only one instance of a class is created 
+
 Flow of the Program:
 1. Private constructor prevents object creation from outside.
 2. A static variable holds the single instance.
 3. A static method returns the instance.
+
 Example Code:
-class Singleton {
-    private static Singleton instance = null;
+class SingletonExample { 
 
-    private Singleton() {}
+    // Step 1: private static instance 
+    private static SingletonExample singleObject; 
 
-    public static Singleton getInstance() {
-        if (instance == null) {
-            instance = new Singleton();
-        }
-        return instance;
-    }
-}
+    // Step 2: private constructor 
+    private SingletonExample() { 
+        System.out.println("Singleton instance created!"); 
+    } 
 
-public class Main {
-    public static void main(String[] args) {
-        Singleton s1 = Singleton.getInstance();
-        Singleton s2 = Singleton.getInstance();
-        System.out.println(s1 == s2);
-    }
-}
+    // Step 3: public static method to get instance 
+    public static SingletonExample getInstance() { 
+        if (singleObject == null) { 
+            singleObject = new SingletonExample(); 
+        } 
+        return singleObject; 
+    } 
+} 
+
+
+public class Main { 
+    public static void main(String[] args) { 
+        SingletonExample obj1 = SingletonExample.getInstance(); 
+        SingletonExample obj2 = SingletonExample.getInstance(); 
+        System.out.println(obj1 == obj2); // true → both references point to same object 
+    } 
+} 
 Output:
 true
+---------------------------
 2. Factory Design Pattern
 Explanation:
 Factory pattern provides an interface for creating objects, but allows subclasses or methods to decide which class to instantiate. It increases loose coupling.
@@ -69,6 +86,7 @@ public class Main {
 }
 Output:
 Circle drawn
+--------------------------
 3. Abstract Factory Design Pattern
 Explanation:
 The Abstract Factory pattern provides a way to create families of related objects without specifying their concrete classes.
@@ -118,13 +136,17 @@ public class Main {
 }
 Output:
 Windows Button
+
+--------------------
 4. Builder Design Pattern
 Explanation:
-Builder pattern separates the construction of a complex object from its representation, allowing the same construction process to create different representations.
+construct complex objects step by step. 
+the builder lets you create an object by chaining methods in a readable way.
 Flow of the Program:
 1. Builder class has methods to set values.
-2. A Director or main method uses builder to create object step by step.
+2. main method uses builder to create object step by step.
 3. Final object is returned after building.
+
 Example Code:
 class House {
     private String walls;
@@ -171,4 +193,72 @@ public class Main {
 }
 Output:
 Brick Walls and Concrete Roof
+
+
+--------------------
+Template Method Pattern:(Type 2)
+Base class will have the skeleton of algo.
+Subclass can override certain steps if needed.
+
+Eg:
+// Step 1: Abstract class with template method
+abstract class Beverage {
+    // Template method
+    public final void prepareRecipe() {
+        boilWater();
+        brew();
+        pourInCup();
+        addExtras();
+    }
+
+    void boilWater() {
+        System.out.println("Boiling water");
+    }
+
+    void pourInCup() {
+        System.out.println("Pouring into cup");
+    }
+
+    // Abstract steps to be implemented by subclasses
+    abstract void brew();
+    abstract void addExtras();
+}
+
+// Step 2: Concrete classes
+class Tea extends Beverage {
+    void brew() {
+        System.out.println("Steeping the tea");
+    }
+    void addExtras() {
+        System.out.println("Adding lemon");
+    }
+}
+
+class Coffee extends Beverage {
+    void brew() {
+        System.out.println("Dripping coffee through filter");
+    }
+    void addExtras() {
+        System.out.println("Adding sugar and milk");
+    }
+}
+
+// Step 3: Client code
+public class Main {
+    public static void main(String[] args) {
+        Beverage tea = new Tea();
+        tea.prepareRecipe();
+
+        System.out.println();
+
+        Beverage coffee = new Coffee();
+        coffee.prepareRecipe();
+    }
+}
+
+
+
+
+
+
 
